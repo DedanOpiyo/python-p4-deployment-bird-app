@@ -1,7 +1,9 @@
-from app import app
-from models import db, Bird
+from app import app, db #, db
+from models import Bird # db,
 
-db.init_app(app)
+# db.init_app(app) # This is new import of db 
+# Avoid creating a new SQLAlchemy() instance in seed.py.
+# import the db and app from app.py
 
 with app.app_context():
 

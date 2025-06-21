@@ -1,5 +1,6 @@
 import os
 
+# Generate the environment variables (we have some in .env file)
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -9,6 +10,7 @@ from flask_restful import Api, Resource
 
 from models import db, Bird
 
+# Following the production version of react # npm run build --prefix client # additional parameters apart from __name__
 app = Flask(
     __name__,
     static_url_path='',
@@ -16,18 +18,25 @@ app = Flask(
     template_folder='../client/build'
 )
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI') # Importing any of our .env variables with os.environ.get().
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
 
 migrate = Migrate(app, db)
 db.init_app(app)
 
+# catch-all - for any route that doesn't match those already defined on the server. 
+# when Flask receives a request,it will render the index.html that was generated to run the client application. 
+# These follows the production version of react(see how we instantiate Flask above app = Flask ...)
 @app.errorhandler(404)
 def not_found(e):
     return render_template("index.html")
 
 api = Api(app)
+
+@app.route('/')
+def index():
+    return "Welcome to the Bird API. Try /birds"
 
 class Birds(Resource):
 
