@@ -36,7 +36,7 @@ api = Api(app)
 
 @app.route('/')
 def index():
-    return "Welcome to the Bird API. Try /birds"
+    return render_template("index.html") # return "Welcome to the Bird API. Try /birds". ). this overides the React frontend!
 
 class Birds(Resource):
 
